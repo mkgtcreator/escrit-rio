@@ -2,18 +2,42 @@ let h2 = document.querySelector('h2');
 let map;
 let brasilLayer;
 let geojsonFiles = [
-  'https://github.com/mkgtcreator/M.I/main/geojson/norte.geojson',
-  'https://github.com/mkgtcreator/M.I/main/geojson/nordeste.geojson',
-  'https://github.com/mkgtcreator/M.I/main/geojson/centro-oeste.geojson',
-  'https://github.com/mkgtcreator/M.I/main/geojson/sudeste.geojson',
-  'https://github.com/mkgtcreator/M.I/main/geojson/sul.geojson'
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-11-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-12-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-13-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-14-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-15-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-16-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-17-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-21-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-22-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-23-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-24-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-25-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-26-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-27-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-28-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-29-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-31-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-32-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-33-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-34-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-35-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-41-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-42-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-43-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-50-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-51-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-52-mun.json',
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-53-mun.json'
 ];
 
 // Função para inicializar o mapa e centralizá-lo no Brasil com controle de zoom
 function initMap() {
-  map = L.map('mapid').setView([-15.7942, -47.8821], 2);
+  console.log('Inicializando o mapa...');
+  map = L.map('mapid').setView([-15.7942, -47.8821], 4);
   if (!map) {
-    console.error('Failed to initialize the map');
+    console.error('Falha ao inicializar o mapa');
     return;
   }
 
@@ -33,13 +57,21 @@ function initMap() {
 // Função para carregar arquivos GeoJSON e adicioná-los ao mapa
 function loadBrasilData() {
   geojsonFiles.forEach(file => {
+    console.log('Carregando arquivo:', file);
     fetch(file)
-      .then(response => response.json())
+      .then(response => {
+        console.log('Resposta recebida:', response);
+        if (!response.ok) {
+          throw new Error('Erro ao carregar arquivo: ' + response.statusText);
+        }
+        return response.json();
+      })
       .then(data => {
         if (!data) {
-          console.error('Failed to load data from ' + file);
+          console.error('Falha ao carregar dados de ' + file);
           return;
         }
+        console.log('Dados carregados:', data);
         brasilLayer = L.geoJson(data, {
           style: function(feature) {
             return {
@@ -75,7 +107,7 @@ function highlightFeature(e) {
     fillOpacity: 0.7
   });
 
-  if (!L.Browser.ie &&!L.Browser.opera &&!L.Browser.edge) {
+  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
     layer.bringToFront();
   }
 }
@@ -86,7 +118,8 @@ function resetHighlight(e) {
 
 function enviarLocalizacao(e) {
   var region = e.latlng;
-  var regionName = `Latitude: ${region.lat}, Longitude: ${region.lng}`;
+  var regionName = `Latitude: ${region.lat}, Longitude: ${region.lng}`;  // Correção aqui
+  console.log('Localização clicada:', regionName);
 
   fetch('https://api.hubapi.com/crm/v3/objects/deals', {
     method: 'POST',
@@ -96,25 +129,25 @@ function enviarLocalizacao(e) {
     },
     body: JSON.stringify({ location: regionName })
   })
-   .then(response => {
+    .then(response => {
       if (!response.ok) {
         throw new Error('Erro ao enviar localização: ' + response.statusText);
       }
       return response.json();
     })
-   .then(data => {
+    .then(data => {
       console.log('Success:', data);
       alert('Sua localização foi registrada com sucesso!');
     })
-   .catch((error) => {
+    .catch((error) => {
       console.error('Erro ao enviar localização:', error);
       alert('Houve um erro ao enviar a localização.');
     });
 }
 
 function success(pos) {
-  console.log(pos.coords.latitude, pos.coords.longitude);
-  h2.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;
+  console.log('Geolocalização obtida:', pos.coords.latitude, pos.coords.longitude);
+  h2.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;  // Correção aqui
 
   if (!map) {
     initMap();
@@ -123,12 +156,12 @@ function success(pos) {
   map.setView([pos.coords.latitude, pos.coords.longitude], 13);
 
   L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
-   .bindPopup('Eu estou aqui.<br> Facilmente customizável.')
-   .openPopup();
+    .bindPopup('Eu estou aqui.<br> Facilmente customizável.')
+    .openPopup();
 }
 
 function error(err) {
-  console.error(err);
+  console.error('Erro ao obter geolocalização:', err);
 }
 
 navigator.geolocation.watchPosition(success, error, {
