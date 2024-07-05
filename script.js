@@ -2,9 +2,9 @@ let h2 = document.querySelector('h2');
 let map;
 let brasilLayer;
 let geojsonFiles = [
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-1oo-mun.json'
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-100-mun.json'
 ];
-  
+
 // Função para inicializar o mapa e centralizá-lo no Brasil com controle de zoom
 function initMap() {
   console.log('Inicializando o mapa...');
