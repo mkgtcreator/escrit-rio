@@ -2,36 +2,9 @@ let h2 = document.querySelector('h2');
 let map;
 let brasilLayer;
 let geojsonFiles = [
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-11-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-12-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-13-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-14-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-15-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-16-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-17-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-21-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-22-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-23-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-24-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-25-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-26-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-27-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-28-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-29-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-31-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-32-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-33-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-34-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-35-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-41-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-42-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-43-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-50-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-51-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-52-mun.json',
-  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-53-mun.json'
+  'https://raw.githubusercontent.com/mkgtcreator/escrit-rio/main/geojs-1oo-mun.json'
 ];
-
+  
 // Função para inicializar o mapa e centralizá-lo no Brasil com controle de zoom
 function initMap() {
   console.log('Inicializando o mapa...');
@@ -118,7 +91,7 @@ function resetHighlight(e) {
 
 function enviarLocalizacao(e) {
   var region = e.latlng;
-  var regionName = `Latitude: ${region.lat}, Longitude: ${region.lng}`;  // Correção aqui
+  var regionName = `Latitude: ${region.lat}, Longitude: ${region.lng}`;
   console.log('Localização clicada:', regionName);
 
   fetch('https://api.hubapi.com/crm/v3/objects/deals', {
@@ -147,7 +120,7 @@ function enviarLocalizacao(e) {
 
 function success(pos) {
   console.log('Geolocalização obtida:', pos.coords.latitude, pos.coords.longitude);
-  h2.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;  // Correção aqui
+  h2.textContent = `Latitude: ${pos.coords.latitude}, Longitude: ${pos.coords.longitude}`;
 
   if (!map) {
     initMap();
